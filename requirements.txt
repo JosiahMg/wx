@@ -1,0 +1,2 @@
+web.py==0.62
+requests==2.25.1
