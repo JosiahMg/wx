@@ -68,7 +68,7 @@ class Handle(object):
                 print("user message ID :", msgID, type(recContent))
                 # 获取RASA服务端得到的返回结果
                 result = get_chat_content(msgID, recContent)
-                result_json = json.loads(result)
+                result_json = json.loads(result, strict=False)
                 replayContent = ""
                 for i in range(len(result_json)):
                     bot_utterence = result_json[i]["text"]

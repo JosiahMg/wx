@@ -13,7 +13,7 @@ def get_nlu_log(raw_text):
     response = requests.post(rasa_nlu_url, json={
         "text":raw_text
     })
-    nlu_json = json.loads(response.content)
+    nlu_json = json.loads(response.content, strict=False)
     nlu_intent = "intent:{}".format(nlu_json["intent"]["name"])
     entity_dict = {}
     for entity in nlu_json["entities"]:
@@ -49,7 +49,7 @@ while 1:
     print("----NLU_log:[{},{}]".format(nlu_intent,entity_dict))
     # action结果
     result = get_chat_content(input_text)
-    result_json = json.loads(result)
+    result_json = json.loads(result, strict=False)
     try:
         for i in range(len(result_json)):
             bot_utterence = result_json[i]["text"]
