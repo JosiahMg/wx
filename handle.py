@@ -1,13 +1,16 @@
 import hashlib
 import json
-
+import platform
 import web
 import requests
-
 import receive
 import replay
 
-botIp = "rasa_ep"  # "127.0.0.1"
+if platform.system().lower() == 'windows':
+    botIp = "127.0.0.1"
+elif platform.system().lower() == 'linux':
+    botIp = "rasa_ep"  # docker-compose use network
+
 botPort = '5005'
 
 
