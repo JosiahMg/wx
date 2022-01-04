@@ -5,6 +5,8 @@ import web
 import requests
 import receive
 import replay
+from create_log import logger
+
 
 if platform.system().lower() == 'windows':
     botIp = "127.0.0.1"
@@ -12,6 +14,8 @@ elif platform.system().lower() == 'linux':
     botIp = "rasa_ep"  # docker-compose use network
 
 botPort = '5005'
+
+logger.debug(F'server ip {botIp}:{botPort}')
 
 
 def get_chat_content(userid, content):
@@ -71,14 +75,18 @@ class Handle(object):
                 print("user message ID :", msgID, type(recContent))
                 # 获取RASA服务端得到的返回结果
                 result = get_chat_content(msgID, recContent)
+                logger.debug(F'retrun from rasa string: {result}')
+
                 result_json = json.loads(result, strict=False)
+                logger.debug(F'retrun from rasa json: {result_json}')
+
                 replayContent = ""
                 for i in range(len(result_json)):
                     bot_utterence = result_json[i]["text"]
-                    print("Bot:", bot_utterence)
+                    logger.info("Bot:", bot_utterence)
                     replayContent += bot_utterence
 
-                print("bot recContent: ", replayContent)
+                logger.info("bot recContent: ", replayContent)
                 # 接受信息与发送信息的主体对象转换一下
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
@@ -87,7 +95,8 @@ class Handle(object):
                     toUser, fromUser, replayContent, msgID)
                 return replyMsg.send()
             else:
-                print("暂且不处理")
+                logger.warning("暂且不处理")
                 return "success"
         except Exception as Argment:
+            logger.error(Argment)
             return Argment
