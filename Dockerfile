@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE ${PORT}
 
 # set the user to run, don't run as root
-USER 1001
+# USER 1001
 
 # 启动wx服务
 CMD ["python", "main.py", "80"]

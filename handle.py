@@ -34,7 +34,7 @@ class Handle(object):
     def GET(self):
         try:
             data = web.input()
-            print(data)
+            logger.info(data)
             if len(data) == 0:
                 return "hello, this is handle view, no data input"
             signature = data.signature
@@ -50,7 +50,8 @@ class Handle(object):
             # 进行sha1加密
             hashcode = hashlib.sha1(tmp_str).hexdigest()
 
-            print("handle/GET func: hashcode, signature: ", hashcode, signature)
+            logger.info("handle/GET func: hashcode, signature: ",
+                        hashcode, signature)
             if hashcode == signature:
                 return echostr
             else:
@@ -60,19 +61,19 @@ class Handle(object):
 
     def POST(self):
         try:
-            print("post")
+            logger.info("post")
             webData = web.data()
-            print("Handle Post webdata is ", webData.decode('utf-8'))
+            logger.info("Handle Post webdata is ", webData.decode('utf-8'))
             # 后台打日志
             recMsg = receive.parse_xml(webData)
             # 该模块是处理文本数据信息
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
                 # 获取到并解析出来用户发送过来的数据信息
                 recContent = recMsg.Content.decode('utf-8')
-                print("user message:", recContent, type(recContent))
+                logger.info("user message:", recContent, type(recContent))
                 # 获取到MsgID 作为信息唯一标识送入RASA中
                 msgID = recMsg.MsgId
-                print("user message ID :", msgID, type(recContent))
+                logger.info("user message ID :", msgID, type(recContent))
                 # 获取RASA服务端得到的返回结果
                 result = get_chat_content(msgID, recContent)
                 logger.debug(F'retrun from rasa string: {result}')
