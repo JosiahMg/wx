@@ -13,7 +13,7 @@ COPY pip.conf /root/.pip/pip.conf
 # 将当前目录文件拷贝到容器工作目录
 ADD . .
 
-RUN python -m pip install --upgrade pip==21.3.1
+RUN python3 -m pip install --upgrade pip==21.3.1
 # 安装依赖
 RUN pip install --no-cache-dir -r requirements.txt
 
